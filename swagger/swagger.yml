@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Movie API
+  description: API for managing movies.
+  version: 1.0.0
+paths:
+  /movie:
+    post:
+      summary: Create a new movie
+      description: Creates a new movie entry.
+      operationId: createMovie
+      requestBody:
+        description: Movie data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '201':
+          description: Movie created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              example:
+                error: Bad request
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                error: Internal server error
+  /movies:
+    get:
+      summary: Finds all movies
+      description: Finds all movies.
+      operationId: GetMovies
+      responses:
+        '200':
+          description: Movie found successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+        '400':
+          description: Invalid status value
+      security:
+        - petstore_auth:
+            - write:movies
+            - read:movies
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        ID:
+          type: integer
+        Title:
+          type: string
+        Description:
+          type: string
